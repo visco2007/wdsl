@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions 
+    name="CambioValutaService"
+    targetNamespace="http://localhost/cambio"
+    xmlns:tns="http://localhost/cambio"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+    <types>
+        <xsd:schema targetNamespace="http://localhost/cambio">
+            <xsd:element name="converti">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="euro" type="xsd:double"/>
+                        <xsd:element name="valuta" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="convertiResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="risultato" type="xsd:double"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <message name="convertiRequest">
+        <part name="parameters" element="tns:converti"/>
+    </message>
+
+    <message name="convertiResponse">
+        <part name="parameters" element="tns:convertiResponse"/>
+    </message>
+
+    <portType name="CambioValutaPortType">
+        <operation name="converti">
+            <input message="tns:convertiRequest"/>
+            <output message="tns:convertiResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="CambioValutaBinding" type="tns:CambioValutaPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="converti">
+            <soap:operation soapAction="converti"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+    </binding>
+
+    <service name="CambioValutaService">
+        <port name="CambioValutaPort" binding="tns:CambioValutaBinding">
+            <soap:address location="http://localhost/server.php"/>
+        </port>
+    </service>
+</definitions>
